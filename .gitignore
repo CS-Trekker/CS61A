@@ -1,0 +1,39 @@
+
+n cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual environments (if any)
+venv/
+env/
+
+# VSCode settings folder
+.vscode/
+
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+
+# Temporary files
+*.log
+*.tmp
+
+# Vim swap and backup files
+*.swp
+*.swo
+*.swn
+*.bak
+*.tmp
+*.un~
+
+# Other editor backups (如果你用其他编辑器产生备份文件)
+*~
+
+.obsidian/
