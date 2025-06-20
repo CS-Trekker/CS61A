@@ -23,7 +23,17 @@ def roll_dice(num_rolls, dice=six_sided):
     assert num_rolls > 0, 'Must roll at least once.'
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
-    
+    total = 0
+    Flag = False
+    for i in range(num_rolls):
+        num_roll = dice()
+        total += num_roll
+        if num_roll == 1:
+            Flag = True
+    if Flag:
+        return 1
+    else:
+        return total
     # END PROBLEM 1
 
 
@@ -38,6 +48,8 @@ def free_bacon(score):
     # Trim pi to only (score + 1) digit(s)
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
+    digits = len(str(pi))
+    pi = pi // (10 ** (digits - score - 1)) % 10
     # END PROBLEM 2
 
     return pi % 10 + 3
@@ -58,6 +70,10 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
     assert opponent_score < 100, 'The game should be over.'
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
+    if num_rolls == 0:
+        return free_bacon(opponent_score)
+    else:
+        return roll_dice(num_rolls, dice)
     # END PROBLEM 3
 
 
@@ -80,6 +96,7 @@ def swine_align(player_score, opponent_score):
     """
     # BEGIN PROBLEM 4a
     "*** YOUR CODE HERE ***"
+    
     # END PROBLEM 4a
 
 
