@@ -33,6 +33,9 @@ ehthumbs.db
 *.tmp
 *.un~
 
+# ignore pdf
+*.pdf
+
 # Other editor backups (如果你用其他编辑器产生备份文件)
 *~
 
