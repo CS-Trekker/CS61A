@@ -1,0 +1,1 @@
+print(int(input())+int(input()))#输入两个整数，输出它们的和

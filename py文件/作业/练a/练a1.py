@@ -1,0 +1,1 @@
+print("%.12f"%float(input()))#保留12位小数
