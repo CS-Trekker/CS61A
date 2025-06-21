@@ -281,20 +281,15 @@ def announce_highest(who, last_score=0, running_high=0):
     # BEGIN PROBLEM 7
     "*** YOUR CODE HERE ***"
     def say(score0, score1):
-        nonlocal last_score, running_high
         if who == 0:
             score = score0
-            if score - last_score > running_high:
-                print(score - last_score,"point(s)! The most yet for Player 0")
-                running_high = score - last_score
-            last_score = score
         else:
             score = score1
-            if score - last_score > running_high:
-                print(score - last_score,"point(s)! The most yet for Player 1")
-                running_high = score - last_score
-            last_score = score
-        return announce_highest(who, last_score, running_high)
+        gain = score - last_score
+        if gain > running_high:
+            print(gain,"point(s)! The most yet for Player",who)
+            return announce_highest(who, score, gain)
+        return announce_highest(who, score, running_high)
     return say
     # END PROBLEM 7
 
@@ -336,6 +331,12 @@ def make_averaged(original_function, trials_count=1000):
     """
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    def averaged_function(*args):
+        total = 0
+        for i in range(trials_count):
+            total += original_function(*args)
+        return total / trials_count
+    return averaged_function
     # END PROBLEM 8
 
 
@@ -350,6 +351,12 @@ def max_scoring_num_rolls(dice=six_sided, trials_count=1000):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    best_roll_num = 1
+    best_average = 0
+    for i in range(10,0,-1):
+        if make_averaged(roll_dice(i,dice),trials_count)(i,dice) > best_average:
+            best_roll_num = i
+    return best_roll_num
     # END PROBLEM 9
 
 
@@ -363,8 +370,7 @@ def winner(strategy0, strategy1):
 
 
 def average_win_rate(strategy, baseline=always_roll(6)):
-    """Return the average win rate of STRATEGY against BASELINE. Averages the
-    winrate when starting the game as player 0 and as player 1.
+    """Return the average win rate of STRATEGY against BASELINE. Averages the winrate when starting the game as player 0 and as player 1.
     """
     win_rate_as_player_0 = 1 - make_averaged(winner)(strategy, baseline)
     win_rate_as_player_1 = make_averaged(winner)(baseline, strategy)

@@ -119,6 +119,19 @@ print(s(16))
 ## hw1
 在 Python 中，函数体（def 里面）可以没有 return 语句，此时函数的返回值默认为 None。
 但函数体中仍然可以有 print() 语句，比如 print(42) 或 print(47)，这些语句会在函数被调用时立即输出内容到控制台，不影响返回值。
+## project1
+### \*args
+```python
+def test(*args):
+	print(type(args))   # <class 'tuple'>
+	print(args)              # (1, 2, 3)
+	print(*args)            # 1 2 3
+	for arg in args:
+		print(arg)
+# 1
+# 2
+# 3
+```
 # 零零碎碎
 ```python
 python ok --local
