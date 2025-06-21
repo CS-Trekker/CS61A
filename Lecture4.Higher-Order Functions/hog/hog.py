@@ -96,7 +96,15 @@ def swine_align(player_score, opponent_score):
     """
     # BEGIN PROBLEM 4a
     "*** YOUR CODE HERE ***"
-    
+    def gcd(a,b):
+        for i in range(min(a,b),0,-1):
+            if a % i == 0 and b % i == 0:
+                return i
+        return 1  # If no common divisor found, return 1
+    if gcd(player_score,opponent_score) >= 10:
+        return True
+    else:
+        return False
     # END PROBLEM 4a
 
 
@@ -119,6 +127,10 @@ def pig_pass(player_score, opponent_score):
     """
     # BEGIN PROBLEM 4b
     "*** YOUR CODE HERE ***"
+    if opponent_score - player_score < 3 and opponent_score > player_score:
+        return True
+    else:
+        return False
     # END PROBLEM 4b
 
 
@@ -158,6 +170,28 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    while score0 < goal and score1 < goal:
+        if who == 0:
+            score0 += take_turn(strategy0(score0,score1),score1,dice)
+            say = say(score0, score1)
+            if score0 >= goal:
+                    break
+            while extra_turn(score0, score1):
+                score0 += take_turn(strategy0(score0, score1), score1, dice)
+                say = say(score0, score1)
+                if score0 >= goal:
+                    break
+        else:
+            score1 += take_turn(strategy1(score1,score0),score0,dice)
+            say = say(score0, score1)
+            if score1 >= goal:
+                break
+            while extra_turn(score1, score0):
+                score1 += take_turn(strategy1(score1, score0), score0, dice)
+                say = say(score0, score1)
+                if score1 >= goal:
+                    break
+        who = other(who)
     # END PROBLEM 5
     # (note that the indentation for the problem 6 prompt (***YOUR CODE HERE***) might be misleading)
     # BEGIN PROBLEM 6
@@ -246,6 +280,22 @@ def announce_highest(who, last_score=0, running_high=0):
     assert who == 0 or who == 1, 'The who argument should indicate a player.'
     # BEGIN PROBLEM 7
     "*** YOUR CODE HERE ***"
+    def say(score0, score1):
+        nonlocal last_score, running_high
+        if who == 0:
+            score = score0
+            if score - last_score > running_high:
+                print(score - last_score,"point(s)! The most yet for Player 0")
+                running_high = score - last_score
+            last_score = score
+        else:
+            score = score1
+            if score - last_score > running_high:
+                print(score - last_score,"point(s)! The most yet for Player 1")
+                running_high = score - last_score
+            last_score = score
+        return announce_highest(who, last_score, running_high)
+    return say
     # END PROBLEM 7
 
 
