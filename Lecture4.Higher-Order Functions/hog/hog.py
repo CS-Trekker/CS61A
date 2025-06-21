@@ -351,13 +351,13 @@ def max_scoring_num_rolls(dice=six_sided, trials_count=1000):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
-    average_roll_dice = make_averaged(roll_dice)
+    average_roll_dice = make_averaged(roll_dice,trials_count)
+    highest_average = 0
     best_roll_num = 1
-    best_average = 0
     for i in range(10,0,-1):
-        if average_roll_dice(i,dice) > best_average:
+        if average_roll_dice(i,dice) > highest_average:
             best_roll_num = i
-            best_average = average_roll_dice(i, dice)
+            highest_average = average_roll_dice(i,dice)
     return best_roll_num
     # END PROBLEM 9
 
@@ -407,7 +407,10 @@ def bacon_strategy(score, opponent_score, cutoff=8, num_rolls=6):
     rolls NUM_ROLLS otherwise.
     """
     # BEGIN PROBLEM 10
-    return 6  # Replace this statement
+    if free_bacon(opponent_score) >= cutoff:
+        return 0
+    else:
+        return num_rolls
     # END PROBLEM 10
 
 
@@ -417,7 +420,10 @@ def extra_turn_strategy(score, opponent_score, cutoff=8, num_rolls=6):
     Otherwise, it rolls NUM_ROLLS.
     """
     # BEGIN PROBLEM 11
-    return 6  # Replace this statement
+    if extra_turn(score + free_bacon(opponent_score),opponent_score) or free_bacon(opponent_score) >= cutoff:
+        return 0
+    else:
+        return num_rolls
     # END PROBLEM 11
 
 
@@ -425,9 +431,20 @@ def final_strategy(score, opponent_score):
     """Write a brief description of your final strategy.
 
     *** YOUR DESCRIPTION HERE ***
+    1.如果我距离100比较接近了,我选择投0-2个
+    2.如果距离100不近,我会首先争取extra_turn
+    3.如果我距离100比较远且无法extra_turn,我选择投使max_scoring_num_rolls()最大,即默认投6个,以6作为num_rolls的默认值
+    4.以8作为cutoff的默认值
     """
     # BEGIN PROBLEM 12
-    return 6  # Replace this statement
+    if score >= 95:
+        return 0
+    elif score >= 90 and score <95:
+        return 1
+    elif score >= 85 and score < 90:
+        return 2
+    else:
+        return extra_turn_strategy(score, opponent_score, cutoff=8, num_rolls=6)
     # END PROBLEM 12
 
 ##########################
