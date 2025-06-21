@@ -351,11 +351,13 @@ def max_scoring_num_rolls(dice=six_sided, trials_count=1000):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    average_roll_dice = make_averaged(roll_dice)
     best_roll_num = 1
     best_average = 0
     for i in range(10,0,-1):
-        if make_averaged(roll_dice(i,dice),trials_count)(i,dice) > best_average:
+        if average_roll_dice(i,dice) > best_average:
             best_roll_num = i
+            best_average = average_roll_dice(i, dice)
     return best_roll_num
     # END PROBLEM 9
 
