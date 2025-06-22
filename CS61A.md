@@ -1,6 +1,7 @@
 # 1、计算机科学
 # 2、函数
 # 3、控制语句
+## pure function
 ```python
 counter = 0
 
@@ -20,7 +21,7 @@ def add(x, y):
 ```
 
 ![[Pasted image 20250618181716.png|450]]
-
+## UnboundLocalError
 ```python
 x = 1
 def f():
@@ -31,6 +32,7 @@ def f():
 f()
 # 如果在函数体中对变量进行了赋值操作，那么该变量会被视为局部变量；在赋值之前使用它会导致 UnboundLocalError
 ```
+## global x
 ```python
 x = 1
 def f():
@@ -41,8 +43,52 @@ def f():
 
 f()
 ```
+## 质因数分解
+```python
+def prime_factors(n):
+    """打印出n的所有质因数
+    >>> prime_factors(3)
+    3
+    >>> prime_factors(858)
+    2
+    3
+    11
+    13
+    """
+    while n > 1:
+        k = smallest_prime_factor(n)
+        n = n // k
+        print(k)
 
+def smallest_prime_factor(n):
+    """打印出n的最小质因数
+    >>> smallest_prime_factor(10)
+    2
+    >>> smallest_prime_factor(15)
+    3
+    """
+    m = 2
+    while n % m != 0:
+        m += 1
+    return m
+
+prime_factors(858)
+```
 # 4、高阶函数
+## 裴波那契数列
+```python
+def fib(n):
+    k = 0
+    pre = 1
+    cur = 0
+    while k < n:
+        pre, cur = cur, cur + pre
+        k += 1
+    return cur
+
+n = int(input())
+print(fib(n))
+```
 ## assert语句
 ```python
 >>> assert 3 < 2, "That means 3 < 2 is False."
@@ -97,7 +143,7 @@ def square(x):
 
 def search(f):
 	i = 0
-	while f(i):
+	while not f(i):
 		i += 1
 	return i
 ```
@@ -122,22 +168,53 @@ print(s(16))
 ```
 > 以上两种写法都可以，都要看懂
 # 5、环境
+![[Pasted image 20250622152307.png|500]]
 ```python
-# 下面这个py的环境图值得一看
-def square(x):
-    return x * x
+from operator import add
 
-def make_adder(n):
-    def adder(k):
-        return k + n
-    return adder
+def curry2(f):
+    def g(x):
+        def h(y):
+            return f(x,y)
+        return h
+    return g
     
-def compose1(f,g):
-    def h(x):
-        return f(g(x))
-    return h
-    
-compose1(square,make_adder(3))(5)
+m = curry2(add)
+
+add_three = m(3)
+
+add_three(2)
+##########################
+curry2 = lambda f : lambda x : lambda y : f(x, y)
+```
+## 没有参数的lambda函数
+```python
+>>> (lambda: 3)()
+3
+# lambda: 3 定义了一个没有参数、返回 3 的 lambda 函数
+# 紧接着 () 把这个 lambda 当作函数调用
+```
+```python
+>>> b = lambda x: lambda: x      # 想想这里的b和c都是什么
+>>> c = b(88)
+>>> b        
+<function <lambda> at 0x000002B9AD2D0700>
+>>> c
+<function <lambda>.<locals>.<lambda> at 0x000002B9AD2D0670>
+>>> c()
+88
+>>>b(88)()
+88
+```
+## 返回自己的函数
+```python
+def print_all(x):
+
+    print(x)
+
+    return print_all
+
+print_all(1)(2)(3)(4)(5)
 ```
 # 作业难点
 ## hw1
@@ -156,6 +233,38 @@ def test(*args):
 # 2
 # 3
 ```
+## lab02
+### chocolate是什么
+```python
+>>> def cake():
+...    print('beets')
+...    def pie():
+...        print('sweets')
+...        return 'cake'
+...    return pie
+>>> chocolate = cake()
+? 'cake'
+-- Not quite. Try again! --
+
+? 'beets'
+-- Not quite. Try again! --
+
+? Function
+-- Not quite. Try again! --
+
+? cake
+-- Not quite. Try again! --
+
+? Nothing
+-- Not quite. Try again! --
+
+? pie
+-- Not quite. Try again! --
+
+? beets
+-- OK! --
+```
+### 
 # 零零碎碎
 ```python
 python ok --local
