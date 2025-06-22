@@ -94,6 +94,12 @@ def is_16(x):
 ```python
 def square(x):
     return x * x
+
+def search(f):
+	i = 0
+	while f(i):
+		i += 1
+	return i
 ```
 ```python
 def inverse1(f):
@@ -115,6 +121,24 @@ s = inverse2(square)
 print(s(16))
 ```
 > 以上两种写法都可以，都要看懂
+# 5、环境
+```python
+# 下面这个py的环境图值得一看
+def square(x):
+    return x * x
+
+def make_adder(n):
+    def adder(k):
+        return k + n
+    return adder
+    
+def compose1(f,g):
+    def h(x):
+        return f(g(x))
+    return h
+    
+compose1(square,make_adder(3))(5)
+```
 # 作业难点
 ## hw1
 在 Python 中，函数体（def 里面）可以没有 return 语句，此时函数的返回值默认为 None。
