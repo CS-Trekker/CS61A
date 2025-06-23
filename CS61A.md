@@ -216,6 +216,19 @@ def print_all(x):
 
 print_all(1)(2)(3)(4)(5)
 ```
+# 6、设计
+## intrinsic name
+> intrinsic name就是函数对象自带的 **\_\_name\_\_** 属性，与你用什么变量去引用这个函数对象无关
+```python
+def foo(x):
+    return x + 1
+
+print(foo.__name__)    # foo
+
+bar = foo
+
+print(bar.__name__)    # foo
+```
 # 作业难点
 ## hw1
 在 Python 中，函数体（def 里面）可以没有 return 语句，此时函数的返回值默认为 None。
@@ -234,7 +247,7 @@ def test(*args):
 # 3
 ```
 ## lab02
-### chocolate是什么
+### chocolate是什么？
 ```python
 >>> def cake():
 ...    print('beets')
@@ -264,7 +277,130 @@ def test(*args):
 ? beets
 -- OK! --
 ```
-### 
+## lab03
+### incremental run（递增游程问题）
+```python
+def get_k_run_starter(n, k):
+    """Returns the 0th digit of the kth increasing run within n.
+    >>> get_k_run_starter(123444345, 0)
+    3
+    >>> get_k_run_starter(123444345, 1)
+    4
+    >>> get_k_run_starter(123444345, 2)
+    4
+    >>> get_k_run_starter(123444345, 3)
+    1
+    """
+    # i = 0
+    # final = None
+    # while ____________________________:
+    #     while ____________________________:
+    #         ____________________________
+    #     final = ____________________________
+    #     i = ____________________________
+    #     n = ____________________________
+    # return final
+    i = 0
+    final = None
+    while i <= k:
+        while n // 10 and (n % 10) > (n // 10) % 10:    # 这个地方要看懂
+            n //= 10                                                      # 进行“去尾”操作
+        final = n % 10                                                       # 进行“取尾”操作
+        i += 1
+        n //= 10                                                                # “取尾”完成后还是要“去尾”
+    return final
+```
+### 关于素数、整除的一个问题
+```python
+def div_by_primes_under(n):
+    """
+    >>> div_by_primes_under(10)(11)
+    False
+    >>> div_by_primes_under(10)(121)
+    False
+    >>> div_by_primes_under(10)(12)
+    True
+    >>> div_by_primes_under(5)(1)
+    False
+    """
+    # checker = lambda x: False
+    # i = ____________________________
+    # while ____________________________:
+    #     if not checker(i):
+    #         checker = (lambda f, i: lambda x: __________)(checker, i)
+    #     i = ____________________________
+    # return ____________________________
+    checker = lambda x: False
+    i = 2
+    while i <= n:
+        if not checker(i):
+            checker = (lambda f, i: lambda x: f(x) or x % i == 0)(checker, i)
+        i += 1
+    return checker
+
+
+
+def div_by_primes_under_no_lambda(n):
+    """
+    >>> div_by_primes_under_no_lambda(10)(11)
+    False
+    >>> div_by_primes_under_no_lambda(10)(121)
+    False
+    >>> div_by_primes_under_no_lambda(10)(12)
+    True
+    >>> div_by_primes_under_no_lambda(5)(1)
+    False
+    """
+    # def checker(x):
+    #     return False
+    # i = ____________________________
+    # while ____________________________:
+    #     if not checker(i):
+    #         def outer(____________________________):
+    #             def inner(____________________________):
+    #                 return ____________________________
+    #             return ____________________________
+    #         checker = ____________________________
+    #     i = ____________________________
+    # return ____________________________
+    def checker(x):
+        return False
+    i = 2
+    while i <= n:
+        if not checker(i):
+            def outer(f,i):
+                def inner(x):
+                    return f(x) or x % i == 0
+                return inner
+            checker = outer(checker,i)
+        i += 1
+    return checker
+```
+### YY图问题
+```python
+y = "y"
+h = y
+def y(y):
+    h = "h"
+    if y == h:
+        return y + "i"
+    y = lambda y: y(h)
+    return lambda h: y(h)
+y = y(y)(y)                                 # 最后y的结果是"hi"
+```
+### 交换两个函数问题
+```python
+def funny(joke):
+    hoax = joke + 1
+    return funny(hoax)       # 这个地方的funny在交换后换成了sad，
+
+def sad(joke):
+    hoax = joke - 1
+    return hoax + hoax
+
+funny, sad = sad, funny         
+result = funny(sad(1))             # 最后是有结果的，result = 2
+```
 # 零零碎碎
 ```python
 python ok --local
