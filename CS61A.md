@@ -1,5 +1,3 @@
-# 1、计算机科学
-# 2、函数
 # 3、控制语句
 ## pure function
 ```python
@@ -229,23 +227,125 @@ bar = foo
 
 print(bar.__name__)    # foo
 ```
-# 作业难点
-## hw1
+# 9、树递归
+```python
+### 级联函数
+def cascade(x):
+    if x < 10:
+        print(x)
+    else:
+        print(x)
+        cascade(x // 10)
+        print(x)
+        
+cascade(12345)   # 想想cascade(12345)会打印什么,可看看环境图
+```
+```python
+def cascade(x):
+	print(x)
+	if x > 10:
+		cascade(x // 10)
+		print(x)
+```
+## 有关递归调用的顺序
+```python
+def inverse_cascade(x):
+    '''
+    >>> inverse_cascade(1234)
+    1
+    12
+    123
+    1234
+    123
+    12
+    1
+    '''
+    grow(x)
+    print(x)
+    shrink(x)
+ 
+def f_then_g(f, g, n) :
+	if n:
+		f(n)
+		g(n)
+
+# grow = lambda n: f_then_g(_________________)
+# shrink = lambda n: f_then_g(________________)
+
+grow = lambda n: f_then_g(grow,print,n // 10)
+shrink = lambda n: f_then_g(print, shrink, n // 10)
+```
+## counting partitions问题
+![[PixPin_2025-06-24_21-38-18.png|250]]
+```python
+def count_partitions(n,m):
+    '''用若干个不超过 m 的正整数的和表示 n 的方法数'''
+    if n == 0:
+        return 1
+    elif m == 0:
+        return 0
+    elif n < 0:
+        return 0
+    else:
+        return count_partitions(n - m, m) + count_partitions(n, m - 1)
+    
+print(count_partitions(6,4))
+```
+[原题地址↓](https://chillyhigh.github.io/CS61A-CN/hw/hw02/#q4)
+```python
+def count_coins(total):
+    def helper(total, smallest_coin):
+        if total == 0:
+            return 1
+        elif total < 0 or smallest_coin is None:
+            return 0
+        else:
+            next_coin = next_largest_coin(smallest_coin)
+            return helper(total - smallest_coin, smallest_coin) + helper(total,next_coin)
+    return helper(total, 1)
+```
+# HW难点
+## hw01
 在 Python 中，函数体（def 里面）可以没有 return 语句，此时函数的返回值默认为 None。
 但函数体中仍然可以有 print() 语句，比如 print(42) 或 print(47)，这些语句会在函数被调用时立即输出内容到控制台，不影响返回值。
-## project1
-### \*args
+## hw02
+### 用递归代替while循环解题
+[原题地址](https://chillyhigh.github.io/CS61A-CN/hw/hw02/#q2)
 ```python
-def test(*args):
-	print(type(args))   # <class 'tuple'>
-	print(args)              # (1, 2, 3)
-	print(*args)            # 1 2 3
-	for arg in args:
-		print(arg)
-# 1
-# 2
-# 3
+def pingpong(n):
+    def helper(index,value,direction):
+        if index == n:
+            return value
+        elif n == 1:
+            return 1
+        else:
+            if (index + 1) % 8 == 0 or num_eights(index + 1) > 0:
+                return helper(index + 1, value + direction, - direction)
+            else:
+                return helper(index + 1, value + direction, direction)
+    return helper(1, 1, 1)
+    
+    # index, value, direction = 1, 1, 1
+    # while index < n:
+    #     value += direction
+    #     index += 1
+    #     if index % 8 == 0 or num_eights(index) > 0:
+    #         direction *= -1
+    # return value
 ```
+### 匿名递归函数问题
+[原题地址](https://chillyhigh.github.io/CS61A-CN/hw/hw02/#q5)
+```python
+from operator import sub, mul
+
+def make_anonymous_factorial():
+    """Return the value of an expression that computes factorial.
+    >>> make_anonymous_factorial()(5)
+    120
+    """
+    return (lambda f: (lambda x: f(f, x)))(lambda f, x: 1 if x == 0 else mul(x, f(f, sub(x, 1))))
+```
+# LAB难点
 ## lab02
 ### chocolate是什么？
 ```python
@@ -400,6 +500,20 @@ def sad(joke):
 
 funny, sad = sad, funny         
 result = funny(sad(1))             # 最后是有结果的，result = 2
+```
+# PROJECT难点
+## project1
+### \*args
+```python
+def test(*args):
+	print(type(args))   # <class 'tuple'>
+	print(args)              # (1, 2, 3)
+	print(*args)            # 1 2 3
+	for arg in args:
+		print(arg)
+# 1
+# 2
+# 3
 ```
 # 零零碎碎
 ```python
