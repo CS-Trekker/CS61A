@@ -333,6 +333,21 @@ def pingpong(n):
     #         direction *= -1
     # return value
 ```
+[原题地址](https://chillyhigh.github.io/CS61A-CN/proj/cats/#problem-6-2-pts)
+```python
+def shifty_shifts(start, goal, limit):
+    def helper(start, goal, diff):
+        if diff > limit:
+            return limit + 1
+        elif len(start) == 0 or len(goal) == 0:
+            return diff + abs(len(start) - len(goal))
+        else:
+            if start[0] == goal[0]:
+                return helper(start[1:], goal[1:], diff)
+            else:
+                return helper(start[1:], goal[1:], diff + 1)
+    return helper(start, goal, 0)
+```
 ### 匿名递归函数问题
 [原题地址](https://chillyhigh.github.io/CS61A-CN/hw/hw02/#q5)
 ```python
@@ -502,7 +517,7 @@ funny, sad = sad, funny
 result = funny(sad(1))             # 最后是有结果的，result = 2
 ```
 # PROJECT难点
-## project1
+## Hog
 ### \*args
 ```python
 def test(*args):
@@ -514,6 +529,33 @@ def test(*args):
 # 1
 # 2
 # 3
+```
+## Cats
+### 数据抽象/抽象屏障
+#### ✅ 正确写法：使用抽象构造函数
+```python
+def time_per_word(times_per_player, words):
+    times = [
+        [end - start for start, end in zip(player[:-1], player[1:])]
+        for player in times_per_player
+    ]
+    return game(words, times)  # ✅ 正确地返回抽象对象
+```
+#### ✅ 抽象接口定义（ADT 函数）
+```python
+def game(words, times):
+    return [words, times]
+
+def all_words(game):
+    return game[0]
+
+def all_times(game):
+    return game[1]
+```
+#### 🚫 不要这样写（违反抽象屏障）
+```python
+def time_per_word(...):
+    return [words, times]  # ❌ 错误：直接返回 list，不能通过属性访问 `.a`
 ```
 # 零零碎碎
 ```python
