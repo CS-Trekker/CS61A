@@ -1,5 +1,4 @@
-def reverse(s:str):
-    if len(s) == 0:
-        return s
-    else:
-        return reverse(s[1:]) + s[0]
+names = ['Alice', 'Bob', 'Charlie']
+scores = [90, 85, 88]
+
+print(list(zip(names, scores)))

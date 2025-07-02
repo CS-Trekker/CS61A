@@ -89,11 +89,6 @@ print(fib(n))
 ```
 ## assert语句
 ```python
->>> assert 3 < 2, "That means 3 < 2 is False."
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-AssertionError: That means 3 < 2 is False.
-
 def area(a):
 	assert a > 0, "a must be positive"
 	return a * a
@@ -304,6 +299,54 @@ def count_coins(total):
             return helper(total - smallest_coin, smallest_coin) + helper(total,next_coin)
     return helper(total, 1)
 ```
+# 12、树
+## sum函数的参数
+```python
+sum(iterable[, start])
+
+sum(1, 2)                        # ❌ 报错：sum() 的第一个参数必须是可迭代对象（如 list、tuple、set、dict、generator 等）
+
+# 第二个参数是 start，默认为 0，且 start 与 iterable 中的元素类型必须一致
+sum([[2, 3], [4]], [])          # ✅ [2, 3, 4]
+
+sum([2, 3, 4], 5)               # ✅ 14 （即 2 + 3 + 4 + 5）
+
+sum([[2, 3, 4], [5]])           # ❌ 报错：start 默认为 0，无法与 list 相加； iterable 中所有元素也必须与 start 类型一致
+```
+## all、any函数
+```python
+all(iterable) -> bool   # 用于判断 可迭代对象中的所有元素是否都为 True
+any(iterable) -> bool # 用于判断 可迭代对象中的元素中是否有一个为True
+```
+# 13、二进制数
+## 补码表示法
+> 以 8位二进制 为例（可以推广到 16位、32位、64位）：
+
+| 十进制  | 补码（二进制）  |
+| ---- | -------- |
+| +0   | 00000000 |
+| -0   | 00000000 |
+| +1   | 00000001 |
+| -1   | 11111111 |
+| +2   | 00000010 |
+| -2   | 11111110 |
+| 0    | 00000000 |
+| -128 | 10000000 |
+| 128  | 无        |
+| 127  | 01111111 |
+> 8位可以表示`127`~`-128` ($2^7 = 128$)
+
+> 最高位是0代表正数，1代表负数，`10000000`是负数
+
+### 方法一：按规则计算补码
+- 写出正数的二进制：`5 = 00000101`
+- 取反（即反码）：`11111010`
+- 加一：`11111010 + 1 = 11111011`
+
+所以，**-5 的补码为：`11111011`**
+### 方法二：直接使用公式
+负数的补码等于：$补码 = 2^n - |负数|$
+-5 的补码 = 256 - 5 = 251 = 二进制 11111011
 # HW难点
 ## hw01
 在 Python 中，函数体（def 里面）可以没有 return 语句，此时函数的返回值默认为 None。
@@ -515,6 +558,15 @@ def sad(joke):
 
 funny, sad = sad, funny         
 result = funny(sad(1))             # 最后是有结果的，result = 2
+```
+## lab05
+### zip函数并行遍历([原题地址](https://chillyhigh.github.io/CS61A-CN/lab/lab05/#q10))
+```python
+names = ['Alice', 'Bob', 'Charlie']
+scores = [90, 85, 88]
+
+for a, b in zip(names, scores):
+    print(f"{a}, {b}")
 ```
 # PROJECT难点
 ## Hog
