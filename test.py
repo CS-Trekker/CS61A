@@ -1,4 +1,7 @@
-names = ['Alice', 'Bob', 'Charlie']
-scores = [90, 85, 88]
+x = 100
 
-print(list(zip(names, scores)))
+def f():
+    nonlocal x
+    print(x)
+    
+f()

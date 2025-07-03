@@ -1,4 +1,4 @@
-# 3、控制语句
+	# 3、控制语句
 ## pure function
 ```python
 counter = 0
@@ -391,6 +391,31 @@ TypeError: can only assign an iterable
  
 >>> t
 [[1, 2, [[3, 4]]], [3, 4]]    # 注意前面的t[1: 2]得到的不是 [3, 4] 而是 [[3, 4]]
+```
+# 可变函数
+```python
+x = 100
+
+def f():
+    x = 1
+    def g():
+        def h():
+            nonlocal x
+            print(x)
+        h()
+    g()
+f()
+# 结果： 1
+```
+```python
+x = 100
+
+def f():
+    nonlocal x
+    print(x)
+    
+f()
+# 报错
 ```
 # HW难点
 ## hw01
