@@ -314,16 +314,24 @@ def add_trees(t1, t2):
     # new_branches = [add_trees(b1, b2) for b1, b2 in zip_longest(branches(t1), branches(t2))]
     # return tree(new_label, new_branches)
 
+    # new_label = label(t1) + label(t2)
+    # new_branches = []
+    # for b1, b2 in zip(branches(t1), branches(t2)):
+    #     new_branches.append(add_trees(b1, b2))
+    # i = len(new_branches)
+    # new_branches += branches(t1)[i:] + branches(t2)[i:]
+    # return tree(new_label, new_branches)
+    
     # print(tree(3, [tree(4), tree(5)]))            [3, [4], [5]]
     # print(branches(tree(3, [tree(4), tree(5)])))  [[4], [5]]
-    while len(branches(t1)) < len(branches(t2)):
-        t1.append(tree(0))
-    while len(branches(t1)) > len(branches(t2)):
-        t2.append(tree(0))
-    new_label =label(t1) + label(t2)
-    new_branches = [add_trees(b1, b2) for b1, b2 in zip(branches(t1), branches(t2))]
-    return tree(new_label, new_branches)
     
+    # while len(branches(t1)) < len(branches(t2)):
+    #     t1.append(tree(0))
+    # while len(branches(t1)) > len(branches(t2)):
+    #     t2.append(tree(0))
+    # new_label =label(t1) + label(t2)
+    # new_branches = [add_trees(b1, b2) for b1, b2 in zip(branches(t1), branches(t2))]
+    # return tree(new_label, new_branches)
 
 
 def build_successors_table(tokens):
