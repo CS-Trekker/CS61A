@@ -1,4 +1,4 @@
-	# 3、控制语句
+# 3、控制语句
 ## pure function
 ```python
 counter = 0
@@ -392,7 +392,7 @@ TypeError: can only assign an iterable
 >>> t
 [[1, 2, [[3, 4]]], [3, 4]]    # 注意前面的t[1: 2]得到的不是 [3, 4] 而是 [[3, 4]]
 ```
-# 可变函数
+# 16、可变函数
 ```python
 x = 100
 
@@ -416,6 +416,23 @@ def f():
     
 f()
 # 报错
+```
+# 17、迭代器
+```python
+def prefixes(x):
+    if x:
+        yield from prefixes(x[:-1])    # x[:-1]执行的是“取尾”操作
+        yield x
+
+ls = list(prefixes("abc"))                         # ['a', 'ab', 'abc']
+```
+```python
+def substrings(s):
+    if s:
+        yield from prefixes(s)
+        yield from substrings(s[1:])
+        
+print(list(substrings("tops")))               # ['t', 'to', 'top', 'tops', 'o', 'op', 'ops', 'p', 'ps', 's']
 ```
 # HW难点
 ## hw01
@@ -477,6 +494,41 @@ def make_anonymous_factorial():
 ```python
 h = float('inf') # 表示一个浮点数的正无穷大
 # float('-inf') 表示负无穷大（-∞）
+```
+## hw04
+### 高阶生成器
+[原题地址](https://chillyhigh.github.io/CS61A-CN/hw/hw04/#q6)
+```python
+def remainders_generator(m):
+    i = 0
+    while i < m:
+        def gen():
+            n = naturals()                       # 这里是为了让之后不重复进行naturals（会导致全部的  next(naturals())  都是  1  ）
+            if i > 0:
+                yield i
+            while True:
+                yield i + m * next(n)
+        yield gen()
+        i += 1
+
+def naturals():
+    i = 1
+    while True:
+        yield i
+        i += 1
+```
+
+> 更思路清晰的做法
+```python
+def remainders_generator(m):
+    def helper(i):
+        for x in natural_generator:
+            if x % m == i:
+                yield x
+    
+    for i in range(m):
+        natural_generator = naturals()
+        yield helper(i)
 ```
 # LAB难点
 ## lab02
