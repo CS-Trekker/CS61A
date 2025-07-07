@@ -1,51 +1,36 @@
-a = [int(x) for x in input().split()]
-b = a[:]
-b[0] = 5
-for x in a:
-    print(x,end = " ")
-print("")
-for x in b:
-    print(x,end = " ")
-# 输入用空格分隔的若干个整数
-# 先将这些整数原样输出
-# 然后将第一个整数改成5，其他不变，输出
+# 示例 1：普通赋值（引用传递，两个变量指向同一个列表对象）
+lst1 = [10, 20, 30]
+ref_lst1 = lst1          # ref_lst1 是 lst1 的引用，修改其中一个会影响另一个
 
-# 输入样例:
-# 1 2 3
-# 输出样例：
-# 1 2 3
-# 5 2 3
-
-print("")
-
-lst1 = [6,7,8,9,0]
-new_lst1 = lst1         #这里是引用赋值，lst1和new_lst1指向同一个东西
-new_lst1[1] = 999
-print(lst1)
-print(new_lst1)
-
-lst = [6,7,8,9,0]
-new_lst = lst[:]        #这里是浅拷贝，除了嵌套列表里的元素的修改等，其他不可变数据类型互不影响
-new_lst[1] = 999
-print(lst)
-print(new_lst)
-
-lst2 = [[1,1,1],2,2,2]
-new_lst2 = lst2
-new_lst2[0][1] = 888
-print(lst2)
-print(new_lst2)
-
-lst2 = [[1,1,1],2,2,2]
-new_lst2 = lst2[:]
-new_lst2[0][1] = 888
-print(lst2)
-print(new_lst2)
+ref_lst1[0] = 999
+print("lst1 =", lst1)       # → [999, 20, 30]
+print("ref_lst1 =", ref_lst1) # → [999, 20, 30]
 
 
+# 示例 2：浅拷贝（仅复制列表外壳，内部元素仍是同一对象）
+lst2 = [10, 20, 30]
+copy_lst2 = lst2[:]        # 使用切片创建浅拷贝
+
+copy_lst2[0] = 888
+print("lst2 =", lst2)         # → [10, 20, 30] 原列表未被修改
+print("copy_lst2 =", copy_lst2) # → [888, 20, 30]
+
+
+# 示例 3：浅拷贝对嵌套列表无效（元素仍是原始对象的引用）
+lst3 = [[1, 2], 3, 4]
+copy_lst3 = lst3[:]
+
+copy_lst3[0][1] = 999        # 修改嵌套列表内部元素
+print("lst3 =", lst3)         # → [[1, 999], 3, 4] 被修改
+print("copy_lst3 =", copy_lst3) # → [[1, 999], 3, 4]
+
+
+# 示例 4：深拷贝（完全复制，包括嵌套结构）
 import copy
-lst3 = [[1,1,1],2,2,2]
-new_lst3 = copy.deepcopy(lst3)      #深拷贝，你我毫不相干
-new_lst3[0][1] = 888
-print(lst3)
-print(new_lst3)
+
+lst4 = [[1, 2], 3, 4]
+deepcopy_lst4 = copy.deepcopy(lst4)
+
+deepcopy_lst4[0][1] = 777    # 修改 deepcopy 中的嵌套元素
+print("lst4 =", lst4)           # → [[1, 2], 3, 4] 原始列表未受影响
+print("deepcopy_lst4 =", deepcopy_lst4) # → [[1, 777], 3, 4]
