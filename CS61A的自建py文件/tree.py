@@ -78,3 +78,8 @@ def print_sum(t, so_far):
     else:
         for b in branches(t):
             print_sum(b, so_far)
+            
+# print_sum(haste, "")
+# has
+# hat
+# he

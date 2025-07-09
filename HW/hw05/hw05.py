@@ -36,6 +36,40 @@ class VendingMachine:
     'Here is your soda.'
     """
     "*** YOUR CODE HERE ***"
+    def __init__(self, product, price):
+        self.product = product
+        self.price = price
+        self.stocks = 0
+        self.funds = 0
+        
+    def vend(self):
+        if self.stocks == 0:
+            return 'Inventory empty. Restocking required.'
+        elif self.funds < self.price:
+            return f"You must add ${self.price - self.funds} more funds."
+        else:
+            self.stocks -= 1
+            change = self.funds -self.price
+            self.funds -= self.price
+            if change > 0:
+                self.funds = 0
+                return f"Here is your {self.product} and ${change} change."
+            else:
+                return f"Here is your {self.product}."
+            
+            
+        
+    def add_funds(self, fund):
+        if self.stocks == 0:
+            return f'Inventory empty. Restocking required. Here is your ${fund}.'
+        else:
+            self.funds += fund
+            return f"Current balance: ${self.funds}"
+        
+    def restock(self, new_stock_num):
+        self.stocks += new_stock_num
+        return f"Current {self.product} stock: {self.stocks}"
+        
 
 
 class Mint:
@@ -74,9 +108,11 @@ class Mint:
 
     def create(self, kind):
         "*** YOUR CODE HERE ***"
+        return kind(self.year)
 
     def update(self):
         "*** YOUR CODE HERE ***"
+        self.year = Mint.current_year
 
 class Coin:
     def __init__(self, year):
@@ -84,6 +120,10 @@ class Coin:
 
     def worth(self):
         "*** YOUR CODE HERE ***"
+        if Mint.current_year - self.year <= 50:
+            return self.cents
+        else:
+            return self.cents + (Mint.current_year - self.year - 50)
 
 class Nickel(Coin):
     cents = 5
@@ -108,6 +148,17 @@ def store_digits(n):
     >>> print("Do not use str or reversed!") if any([r in cleaned for r in ["str", "reversed"]]) else None
     """
     "*** YOUR CODE HERE ***"
+    if n < 10:
+        return Link(n)
+    else:
+        original_n = n
+        first_num = 10
+        k = 1
+        while first_num >= 10:
+            n //= 10
+            first_num = n
+            k += 1
+        return Link(first_num, store_digits(original_n % (10**(k - 1))))
 
 
 def is_bst(t):
@@ -136,7 +187,38 @@ def is_bst(t):
     False
     """
     "*** YOUR CODE HERE ***"
-
+    def bst_min(t):
+        if t.is_leaf():
+            return t.label
+        else:
+            return bst_min(t.branches[0])
+        
+    def bst_max(t):
+        if t.is_leaf():
+            return t.label
+        elif len(t.branches) == 1:
+            return bst_max(t.branches[0])
+        else:
+            return bst_max(t.branches[1])
+    
+    
+    bst_min_t = bst_min(t)
+    bst_max_t = bst_max(t)
+    # print(bst_min_t)
+    # print(bst_max_t)
+    if t.is_leaf():
+        return True
+    elif len(t.branches) == 2:
+        if t.branches[0].label <= t.label and t.branches[1].label > t.label and t.branches[0].label >= bst_min_t and t.branches[1].label <= bst_max_t:
+            return all(is_bst(b) for b in t.branches)
+        else:
+            return False
+    else:
+        return is_bst(t.branches[0])
+    
+        
+        
+        
 
 def preorder(t):
     """Return a list of the entries in this tree in the order that they
@@ -149,6 +231,13 @@ def preorder(t):
     [2, 4, 6]
     """
     "*** YOUR CODE HERE ***"
+    if t.is_leaf():
+        return [t.label]
+    else:
+        result = [t.label]
+        for b in t.branches:
+            result.extend(preorder(b))
+        return result
 
 
 def path_yielder(t, value):
@@ -186,12 +275,26 @@ def path_yielder(t, value):
     [[0, 2], [0, 2, 1, 2]]
     """
 
-    "*** YOUR CODE HERE ***"
+    # "*** YOUR CODE HERE ***"
 
-    for _______________ in _________________:
-        for _______________ in _________________:
+    # for _______________ in _________________:
+    #     for _______________ in _________________:
 
-            "*** YOUR CODE HERE ***"
+    #         "*** YOUR CODE HERE ***"
+    if t.label == value:
+        yield [t.label]
+    for b1 in t.branches:
+        for b2 in b1.branches:
+            if b1.label == value:
+                yield [t.label, b1.label]
+            if b2.label == value:
+                yield [t.label, b1.label, b2.label]
+            else:
+                if list(path_yielder(b1, value)):
+                    result = [t.label]
+                    result.extend(list(path_yielder(b1, value)))
+                yield result
+
 
 
 class Link:
