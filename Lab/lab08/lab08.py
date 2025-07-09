@@ -8,6 +8,22 @@ def convert_link(link):
     []
     """
     "*** YOUR CODE HERE ***"
+    # if link == Link.empty:
+    #     return []
+    # result = []
+    # while link.rest != Link.empty:
+    #     result.append(link.first)
+    #     link = link.rest
+    # result.append(link.first)
+    # return result
+    
+    if link == Link.empty:
+        return []
+    if link.rest == Link.empty:
+        return [link.first]
+    else:
+        return [link.first] + convert_link(link.rest)
+    
 
 
 def every_other(s):
@@ -28,6 +44,12 @@ def every_other(s):
     Link(4)
     """
     "*** YOUR CODE HERE ***"
+    if s.rest.rest:
+        s.rest = s.rest.rest
+        every_other(s.rest)
+    else:
+        s.rest = s.rest.rest
+        return
 
 
 def cumulative_mul(t):
@@ -40,7 +62,20 @@ def cumulative_mul(t):
     Tree(105, [Tree(15, [Tree(5)]), Tree(7)])
     """
     "*** YOUR CODE HERE ***"
-
+    def helper(t):
+        if t.is_leaf():
+            return(t.label)
+        else:
+            result = t.label
+            for b in t.branches:
+                result *= helper(b)
+            return result
+    if t.is_leaf():
+        pass
+    else:
+        t.label = helper(t)
+        for b in t.branches:
+            b.label = helper(b)
 
 def has_cycle(link):
     """Return whether link contains a cycle.
@@ -57,6 +92,14 @@ def has_cycle(link):
     False
     """
     "*** YOUR CODE HERE ***"
+    rests = []
+    while link.rest != Link.empty:
+        if link.rest not in rests:
+            rests.append(link.rest)
+            link = link.rest
+        else:
+            return True
+    return False
 
 def has_cycle_constant(link):
     """Return whether link contains a cycle.
@@ -70,6 +113,14 @@ def has_cycle_constant(link):
     False
     """
     "*** YOUR CODE HERE ***"
+    rabbit = link
+    turtle = link
+    while rabbit != Link.empty and rabbit.rest != Link.empty:
+        rabbit = rabbit.rest.rest
+        turtle = turtle.rest
+        if rabbit == turtle:
+            return True
+    return False
 
 
 def reverse_other(t):
@@ -86,6 +137,16 @@ def reverse_other(t):
     Tree(1, [Tree(8, [Tree(3, [Tree(5), Tree(4)]), Tree(6, [Tree(7)])]), Tree(2)])
     """
     "*** YOUR CODE HERE ***"
+    if t.is_leaf():
+        return
+    elif t.branches:
+        labels = [b.label for b in t.branches]
+        for i in range(len(t.branches[:])):
+            t.branches[i].label = labels[len(labels) - i - 1]
+        for b in t.branches:
+            if b.branches:
+                for b1 in b.branches:
+                    reverse_other(b1)
 
 
 class Link:
