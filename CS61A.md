@@ -695,6 +695,8 @@ scores = [90, 85, 88]
 for a, b in zip(names, scores):
     print(f"{a}, {b}")
 ```
+## lab09
+([原题地址1](https://chillyhigh.github.io/CS61A-CN/lab/lab09/#q2)、[原题地址2](https://chillyhigh.github.io/CS61A-CN/lab/lab09/#q3))(有关列表子序列的两个问题)
 # PROJECT难点
 ## Hog
 ### \*args
