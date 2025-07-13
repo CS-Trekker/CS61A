@@ -434,6 +434,75 @@ def substrings(s):
         
 print(list(substrings("tops")))               # ['t', 'to', 'top', 'tops', 'o', 'op', 'ops', 'p', 'ps', 's']
 ```
+# 27、Scheme
+> pwsh中输入命令`D:\Racket\Racket.exe`
+
+```scheme
+> (define (abs x)
+          (if (< x 0)
+              (- x)
+              x))
+> (abs -5)
+5
+```
+## 列表
+```scheme
+> (define s (cons 1 (cons 2 empty)))
+> s
+'(1 2)
+
+> (list? s)
+#t
+
+> (car s)
+1
+> (cdr s)
+'(2)
+
+> (cons s s)
+'((1 2) 1 2)
+
+> (cons s (cons s empty))
+'((1 2) (1 2))
+
+> (null? empty)
+#t
+
+> (define t (list 1 2 3 4))
+> t
+'(1 2 3 4)
+
+> (define ls (let ([a 1] [b 2]) (list a b)))
+> ls
+'(1 2)
+```
+## 引用
+```scheme
+> 'a
+'a
+
+> (quote a)
+'a
+```
+```scheme
+> '(a b c)
+'(a b c)      # 这个时候我还没有定义a、b、c
+```
+```scheme
+# 有 ' 符号 意思是	把名字为 quotient 的符号（symbol）放进列表里
+> (define s (list 'quotient 10 2))
+> s
+'(quotient 10 2)
+
+# 没 ' 符号 意思是	把实际的函数对象 quotient 放进列表里
+> (define s (list quotient 10 2))
+> s
+'(#<procedure:quotient> 10 2)
+
+# 两种方法都可以用 eval
+> (eval s)
+5
+```
 # HW难点
 ## hw01
 在 Python 中，函数体（def 里面）可以没有 return 语句，此时函数的返回值默认为 None。
