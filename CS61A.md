@@ -1,3 +1,4 @@
+[toc]
 # 3、控制语句
 ## pure function
 ```python
