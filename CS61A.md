@@ -435,7 +435,7 @@ def substrings(s):
 print(list(substrings("tops")))               # ['t', 'to', 'top', 'tops', 'o', 'op', 'ops', 'p', 'ps', 's']
 ```
 # 27、Scheme
-> pwsh中输入命令`D:\Racket\Racket.exe`
+> linux中输入命令`rlwrap mit-scheme`
 
 ```scheme
 > (define (abs x)
@@ -471,7 +471,23 @@ print(list(substrings("tops")))               # ['t', 'to', 'top', 'tops', 'o', 
 > (define t (list 1 2 3 4))
 > t
 '(1 2 3 4)
+```
+```scheme
+; lst -> (1 . 2)
+(define lst (cons 1 2))
 
+; 以下两种都报错
+(define lst (cons 1 (2)))
+(define a (2))
+
+; lst -> (1 2)
+(define lst (cons 1 '(2)))
+(define lst (list 1 2))
+
+> (cdr lst)
+; (2)
+```
+```scheme
 > (define ls (let ([a 1] [b 2]) (list a b)))
 > ls
 '(1 2)
@@ -486,22 +502,29 @@ print(list(substrings("tops")))               # ['t', 'to', 'top', 'tops', 'o', 
 ```
 ```scheme
 > '(a b c)
-'(a b c)      # 这个时候我还没有定义a、b、c
+'(a b c)      ; 这个时候我还没有定义a、b、c
 ```
 ```scheme
-# 有 ' 符号 意思是	把名字为 quotient 的符号（symbol）放进列表里
+; 有 ' 符号 意思是	把名字为 quotient 的符号（symbol）放进列表里
 > (define s (list 'quotient 10 2))
 > s
 '(quotient 10 2)
 
-# 没 ' 符号 意思是	把实际的函数对象 quotient 放进列表里
+; 没 ' 符号 意思是	把实际的函数对象 quotient 放进列表里
 > (define s (list quotient 10 2))
 > s
 '(#<procedure:quotient> 10 2)
 
-# 两种方法都可以用 eval
+; 两种方法都可以用 eval
 > (eval s)
 5
+```
+## quasiquote和unquote
+```scheme
+`(a b c)        ; => (a b c)（像quote一样不求值）
+
+(define x 10)
+`(a b ,x)       ; => (a b 10)
 ```
 # HW难点
 ## hw01
