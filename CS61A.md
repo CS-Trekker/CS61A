@@ -527,6 +527,12 @@ print(list(substrings("tops")))               # ['t', 'to', 'top', 'tops', 'o', 
 (define x 10)
 `(a b ,x)       ; => (a b 10)
 ```
+# 异常
+> `python -O`
+```python
+> __debug__
+> False
+```
 # HW难点
 ## hw01
 在 Python 中，函数体（def 里面）可以没有 return 语句，此时函数的返回值默认为 None。
