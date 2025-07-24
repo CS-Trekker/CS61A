@@ -436,8 +436,7 @@ def substrings(s):
 print(list(substrings("tops")))               # ['t', 'to', 'top', 'tops', 'o', 'op', 'ops', 'p', 'ps', 's']
 ```
 # 27、Scheme
-> linux中输入命令`rlwrap mit-scheme`
-
+> linux中输入命令`rlwrap mit-scheme`，然后可以直接写，也可以使用形如`(load "test.scm")`(单引号代表quote)
 ```scheme
 > (define (abs x)
           (if (< x 0)
