@@ -437,22 +437,11 @@ print(list(substrings("tops")))               # ['t', 'to', 'top', 'tops', 'o', 
 ```
 # 27、Scheme
 > linux中输入命令`rlwrap mit-scheme`，然后可以直接写，也可以使用形如`(load "test.scm")`(单引号代表quote)
-```scheme
-> (define (abs x)
-          (if (< x 0)
-              (- x)
-              x))
-> (abs -5)
-5
-```
 ## 列表
 ```scheme
 > (define s (cons 1 (cons 2 empty)))
 > s
 '(1 2)
-
-> (list? s)
-#t
 
 > (car s)
 1
@@ -526,7 +515,32 @@ print(list(substrings("tops")))               # ['t', 'to', 'top', 'tops', 'o', 
 (define x 10)
 `(a b ,x)       ; => (a b 10)
 ```
-# 异常
+## Scheme真假值
+> 只有 #f 是假值,其他所有值都是真值
+```scheme
+scm> (define (zero) 0)
+? zero
+-- OK! --
+
+scm> (or (zero) 3)
+? 0
+-- OK! --
+```
+> 这里`(zero)`不是列表，而是函数调用
+> (or (zero) 3) 中，`(zero) 先求值为 0`，然后 or 看到第一个真值就返回它
+## let和let*
+*以下用的是61a-Scheme与前面的MIT-Scheme不同*
+```scheme
+> (let ((a 1) (b a)) b)           ; 原来的环境中没有a
+;Unbound variable: a
+
+> (let* ((a 1) (b a)) b)         ; 顺序绑定
+1
+
+> (let ((a 1) (a 2)) (+ a a))
+; SchemeError
+```
+# 28、异常
 > `python -O`
 ```python
 > __debug__
@@ -835,6 +849,25 @@ def all_times(game):
 ```python
 def time_per_word(...):
     return [words, times]  # ❌ 错误：直接返回 list，不能通过属性访问 `.a`
+```
+## Scheme
+### 信仰之跃
+> `(nondecreaselist '(1 2 3 4 1 2 3 4 1 1 1 2 1 1 0 4 3 2 1))`
+> 输出为`((1 2 3 4) (1 2 3 4) (1 1 1 2) (1 1) (0 4) (3) (2) (1))`
+```Scheme
+(define (nondecreaselist s)
+  (cond
+      ((null? (cdr s))
+          (list s))
+      ((> (car s) (cadr s))
+          (cons (list (car s))
+               (nondecreaselist (cdr s))))
+      (else
+          (cons (cons    (car s) 
+                    (car (nondecreaselist (cdr s))))
+               (cdr (nondecreaselist (cdr s)))))
+   )
+)
 ```
 # 零零碎碎
 ```python
