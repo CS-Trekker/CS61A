@@ -1,4 +1,3 @@
-
 -- DATA --
 
 CREATE TABLE flights AS
