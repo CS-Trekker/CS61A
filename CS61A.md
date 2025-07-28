@@ -546,6 +546,88 @@ scm> (or (zero) 3)
 > __debug__
 > False
 ```
+# 32、SQL
+> 在vscode界面使用命令`SQLite: Open Database`就可以在左下角出现`SQLITE EXPLORER`窗格，查看相应db文件
+> 使用python创建、修改db文件过程参见`CS61A\CS61A的自建文件\sql创建.py`
+
+> 在终端中使用`sqlite3`命令，然后`.open n.db`，或者直接`sqlite3 n.db`, `.exit` / `.quit` / `ctrl+c, c`退出
+
+## 字符串处理
+```sql
+select substr('hello world', 4, 2) || substr('hello world', instr('hello world', ' ') + 1, 1);    -- 结果：   low
+```
+## group
+```sql
+sql> select * from dogs;
+|name|fur|height|
+|---|---|---|
+|ace|long|26|
+|bella|short|52|
+|charlie|long|47|
+|daisy|long|46|
+|ellie|short|35|
+|finn|curly|32|
+|ginger|short|28|
+|hank|curly|31|
+
+
+sql> select fur, count(*) from dogs group by fur having count(*) = 3;
+|fur|count(*)|
+|---|---|
+|long|3|
+|short|3|
+```
+## insert
+> 有`value`和`select`两种方法
+```sql
+create table primes (n unique, if_prime default 1);
+sql> insert into primes (n) values (1), (2), (3);
+
+sql> select * from primes;
+|n|if_prime|
+|---|---|
+|1|1|
+|2|1|
+|3|1|
+
+
+sql> insert into primes (n) select n+3 from primes;
+
+sql> select * from primes;
+|n|if_prime|
+|---|---|
+|1|1|
+|2|1|
+|3|1|
+|4|1|
+|5|1|
+|6|1|
+```
+## update
+```sql
+update primes set if_prime = 0 where n > 2 and n % 2 = 0;
+update primes set if_prime = 0 where n > 3 and n % 3 = 0; 
+update primes set if_prime = 0 where n > 5 and n % 5 = 0;
+```
+## delete
+```sql
+delete from primes where n = 1 or if_prime = 0;
+```
+![[Pasted image 20250727205553.png|84]]
+## SQL注入
+```python
+name = "Robert'); DROP TABLE Students;
+```
+```python
+# 字符串拼接（不安全）
+cmd = "INSERT INTO Students VALUES ('" + name + "');"
+db.executescript(cmd)
+```
+```python
+# 参数化查询（安全）
+db.execute("INSERT INTO Students VALUES (?)", [name])
+# 数据库会把传入的参数name当作数据处理，不会把参数内容当作SQL语句的一部分执行
+```
 # HW难点
 ## hw01
 在 Python 中，函数体（def 里面）可以没有 return 语句，此时函数的返回值默认为 None。

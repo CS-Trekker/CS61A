@@ -2,20 +2,26 @@
 
 
 CREATE TABLE bluedog AS
-  SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+  SELECT color, pet from students 
+  where color = 'blue' and pet = 'dog';
 
 CREATE TABLE bluedog_songs AS
-  SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+  SELECT color, pet, song from students 
+  where color = 'blue' and pet = 'dog';
 
 
 CREATE TABLE smallest_int AS
-  SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+  SELECT time, smallest from students 
+  where smallest > 2
+  order by smallest limit 20;
 
 
 CREATE TABLE matchmaker AS
-  SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+  SELECT a.pet, a.song, a.color, b.color from students as a, students as b
+  where a.pet = b.pet and a.song = b.song and a.time <> b.time;
 
 
 CREATE TABLE sevens AS
-  SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+  SELECT a.seven from students as a, numbers as b
+  where a.number = 7 and b.'7' = 'True' and a.time = b.time;
 
