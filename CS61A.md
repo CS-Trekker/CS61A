@@ -540,6 +540,16 @@ scm> (or (zero) 3)
 > (let ((a 1) (a 2)) (+ a a))
 ; SchemeError
 ```
+## 宏macro
+> 该写法在CS61A-Scheme中生效
+```scheme
+> (define-macro (twice expr) (list 'begin expr expr))
+twice
+
+> (twice (print 2))
+2
+2
+```
 # 28、异常
 > `python -O`
 ```python
@@ -889,8 +899,31 @@ scores = [90, 85, 88]
 for a, b in zip(names, scores):
     print(f"{a}, {b}")
 ```
-## lab09
-([原题地址1](https://chillyhigh.github.io/CS61A-CN/lab/lab09/#q2)、[原题地址2](https://chillyhigh.github.io/CS61A-CN/lab/lab09/#q3))(有关列表子序列的两个问题)
+## lab09、lab14
+### ⭐列表的子列表问题
+([lab9原题地址1](https://chillyhigh.github.io/CS61A-CN/lab/lab09/#q2)、[lab9原题地址2](https://chillyhigh.github.io/CS61A-CN/lab/lab09/#q3))(挺复杂的)
+
+[lab14原题地址](https://chillyhigh.github.io/CS61A-CN/lab/lab14/#q4)
+```python
+# 生成列表所有子列表的标准做法
+def sub_lst(lst):
+    if lst == []:
+        return [[]]
+    else:
+        rest_subs = sub_lst(lst[1:])
+        first = lst[0]
+        return rest_subs + [[first] + ls for ls in rest_subs]
+```
+### 反转链表
+```python
+def fold(link, fn, start):
+	if link == Link.empty:
+		return start
+	return fold(link.rest, fn, fn(start, link.first))
+
+def reverse(link):
+	return fold(link, lambda x, y: Link(y, x), Link.empty)  # 非常巧妙的地方
+```
 # PROJECT难点
 ## Hog
 ### \*args
@@ -906,18 +939,15 @@ def test(*args):
 # 3
 ```
 ## Cats
-### 数据抽象/抽象屏障
-#### ✅ 正确写法：使用抽象构造函数
+### 数据抽象
+> ADT -> 抽象数据类型
 ```python
 def time_per_word(times_per_player, words):
-    times = [
-        [end - start for start, end in zip(player[:-1], player[1:])]
-        for player in times_per_player
-    ]
-    return game(words, times)  # ✅ 正确地返回抽象对象
-```
-#### ✅ 抽象接口定义（ADT 函数）
-```python
+    times = [[end - start for start, end in zip(player[:-1], player[1:])] for player in times_per_player]
+    return game(words, times)  # ✅ 使用 ADT 构造函数
+
+# ADT接口
+# game / all_words / all_times → 分别是 构造器 和 选择器
 def game(words, times):
     return [words, times]
 
@@ -927,11 +957,16 @@ def all_words(game):
 def all_times(game):
     return game[1]
 ```
-#### 🚫 不要这样写（违反抽象屏障）
+
 ```python
-def time_per_word(...):
-    return [words, times]  # ❌ 错误：直接返回 list，不能通过属性访问 `.a`
+def time_per_word(times_per_player, words):
+    times = [
+        [end - start for start, end in zip(player[:-1], player[1:])]
+        for player in times_per_player
+    ]
+    return [words, times] # ❌ 不经过 ADT 构造，破坏抽象层
 ```
+
 ## Scheme
 ### 信仰之跃
 > `(nondecreaselist '(1 2 3 4 1 2 3 4 1 1 1 2 1 1 0 4 3 2 1))`
@@ -977,3 +1012,5 @@ notepad $PROFILE
 # 重新加载配置文件
 . $PROFILE
 ```
+
+> `class Account:` 和 `class Account(object):` **完全等价**
