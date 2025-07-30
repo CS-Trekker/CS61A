@@ -165,11 +165,10 @@ def pawssible_patches(start, goal, limit):
     #     # BEGIN
     #     "*** YOUR CODE HERE ***"
     #     # END
-    original_limit = limit
     if limit < 0:# Fill in the condition
         # BEGIN
         "*** YOUR CODE HERE ***"
-        return original_limit + 1
+        return limit + 1
         # END
 
     elif len(start) == 0 or len(goal) == 0: # Feel free to remove or add additional cases
