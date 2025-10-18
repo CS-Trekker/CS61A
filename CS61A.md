@@ -558,6 +558,8 @@ twice
 ```
 # 32、SQL
 > 在vscode界面使用命令`SQLite: Open Database`就可以在左下角出现`SQLITE EXPLORER`窗格，查看相应db文件
+> （2025.9.15出现bug，现已更换SQLite Viewer插件)
+
 > 使用python创建、修改db文件过程参见`CS61A\CS61A的自建文件\sql创建.py`
 
 > 在终端中使用`sqlite3`命令，然后`.open n.db`，或者直接`sqlite3 n.db`, `.exit` / `.quit` / `ctrl+c, c`退出
